@@ -2,6 +2,16 @@
 
 All notable changes to `Rhea` will be documented in this file
 
+## v2.1.0 - 2024-04-08
+
+### What's Changed
+
+* Bump ramsey/composer-install from 2 to 3 by @dependabot in https://github.com/lara-zeus/rhea/pull/22
+* Bump dependabot/fetch-metadata from 1.6.0 to 2.0.0 by @dependabot in https://github.com/lara-zeus/rhea/pull/23
+* support laravel 11 by @atmonshi in https://github.com/lara-zeus/rhea/pull/24
+
+**Full Changelog**: https://github.com/lara-zeus/rhea/compare/v2.0.4...v2.1.0
+
 ## v2.0.4 - 2024-01-13
 
 ### What's Changed
