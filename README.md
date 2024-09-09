@@ -61,7 +61,7 @@ If you discover any security related issues, please email info@larazeus.com inst
 
 ## Credits
 
--   [php coder](https://github.com/atmonshi)
+-   [Lara Zeus (Ash)](https://github.com/atmonshi)
 -   [All Contributors](../../contributors)
 
 ## License
