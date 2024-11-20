@@ -27,7 +27,7 @@ class Importer extends Page
 
     public bool $chunk = false;
 
-    public $progress = 10;
+    public $progress = 0;
     public $current = 0;
     public $count = 0;
 
@@ -97,7 +97,7 @@ class Importer extends Page
             $zeusPost->syncTagsWithType($tags->where('taxonomy', 'category')->pluck('term.name')->toArray(), 'category');
         }
 
-        $this->current++;
+        $this->updateProgress();
     }
 
     public function updateProgress()
