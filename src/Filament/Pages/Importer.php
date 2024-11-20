@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use LaraZeus\Rhea\Forms\Components\ProgressBar;
 use LaraZeus\Rhea\RheaPlugin;
+use LaraZeus\Sky\SkyPlugin;
 
 use Livewire\Component as Livewire;
 
