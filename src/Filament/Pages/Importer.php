@@ -89,7 +89,6 @@ class Importer extends Page
 
     public function processPost($post)
     {
-        dd($post);
         $zeusPost = $this->savePost($post);
         /** @phpstan-ignore-next-line */
         $tags = $post->taxonomies()->get();
