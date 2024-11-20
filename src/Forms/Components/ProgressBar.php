@@ -8,7 +8,4 @@ class ProgressBar extends Field
 {
     protected string $view = 'zeus::forms.components.progress-bar';
 
-    protected $listeners = [
-        'progressUpdated' => '$refresh'
-    ];
 }
