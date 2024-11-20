@@ -10,6 +10,7 @@ use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
+use LaraZeus\Rhea\Forms\Components\ProgressBar;
 use LaraZeus\Rhea\RheaPlugin;
 use LaraZeus\Sky\SkyPlugin;
 use Livewire\Component as Livewire;
@@ -27,6 +28,8 @@ class Importer extends Page
     public bool $chunk = false;
 
     public $progress = 0;
+    public $current = 0;
+    public $count = 0;
 
     public $wpPosts;
 
@@ -71,6 +74,7 @@ class Importer extends Page
         }
 
         $posts = Post::where('post_status', '!=', 'auto-draft')->get();
+        $this->count = $posts->count();
 
         foreach ($posts as $post) {
             $this->processPost($post);
@@ -92,6 +96,14 @@ class Importer extends Page
             $zeusPost->syncTagsWithType($tags->where('taxonomy', 'post_tag')->pluck('term.name')->toArray(), 'tag');
             $zeusPost->syncTagsWithType($tags->where('taxonomy', 'category')->pluck('term.name')->toArray(), 'category');
         }
+
+        $this->current++;
+    }
+
+    public function updateProgress()
+    {
+        $this->current++;
+        $this->progress = ceil(($this->current / $this->count) * 100);
     }
 
     public function savePost($post)
@@ -124,7 +136,7 @@ class Importer extends Page
                 Toggle::make('truncate')->label('Truncate')->helperText('truncate the current Posts table'),
                 Toggle::make('overwrite')->label('Overwrite')->helperText('overwrite all existences posts'),
                 Toggle::make('chunk')->label('Chunk')->helperText('import in chunks (useful when you have a lot of posts)'),
-                Placeholder::make('processed')->label('Records Processed')->content(fn (Livewire $livewire): string => $livewire->progress)->live(),
+                ProgressBar::make('progress')->label('Progress')->live(),
             ]),
         ];
     }
