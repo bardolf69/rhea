@@ -65,6 +65,8 @@ class Importer extends Page
                 ->send();
         }
 
+        $this->count = Post::where('post_status', '!=', 'auto-draft')->count();
+
         if ($this->chunk) {
             $posts = Post::where('post_status', '!=', 'auto-draft')->chunk(100, function ($posts) {
                 foreach ($posts as $post) {
@@ -74,7 +76,6 @@ class Importer extends Page
         }
 
         $posts = Post::where('post_status', '!=', 'auto-draft')->get();
-        $this->count = $posts->count();
 
         foreach ($posts as $post) {
             $this->processPost($post);
