@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use LaraZeus\Rhea\Forms\Components\ProgressBar;
 use LaraZeus\Rhea\RheaPlugin;
-use LaraZeus\Sky\SkyPlugin;
+
 use Livewire\Component as Livewire;
 
 class Importer extends Page
@@ -89,6 +89,7 @@ class Importer extends Page
 
     public function processPost($post)
     {
+        dd($post);
         $zeusPost = $this->savePost($post);
         /** @phpstan-ignore-next-line */
         $tags = $post->taxonomies()->get();
