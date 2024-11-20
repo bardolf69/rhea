@@ -102,11 +102,11 @@ class Importer extends Page
         $this->updateProgress();
     }
 
-    public function updateProgress()
+    public function updateProgress(Livewire $livewire)
     {
         $this->current++;
         $this->progress = ceil(($this->current / $this->count) * 100);
-        $this->emit('progressUpdated');
+        $livewire->emit('progressUpdated');
     }
 
     public function savePost($post)
