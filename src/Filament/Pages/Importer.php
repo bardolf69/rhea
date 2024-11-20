@@ -22,6 +22,8 @@ class Importer extends Page
 
     public bool $overwrite = false;
 
+    public bool $chunk = false;
+
     public $wpPosts;
 
     public static function getNavigationGroup(): ?string
@@ -56,23 +58,36 @@ class Importer extends Page
                 ->send();
         }
 
+        if ($this->chunk) {
+            $posts = Post::where('post_status', '!=', 'auto-draft')->chunk(100, function ($posts) {
+                foreach ($posts as $post) {
+                    $this->processPost($post);
+                }
+            });
+        }
+
         $posts = Post::where('post_status', '!=', 'auto-draft')->get();
 
         foreach ($posts as $post) {
-            $zeusPost = $this->savePost($post);
-            /** @phpstan-ignore-next-line */
-            $tags = $post->taxonomies()->get();
-
-            if (! $tags->isEmpty()) {
-                $zeusPost->syncTagsWithType($tags->where('taxonomy', 'post_tag')->pluck('term.name')->toArray(), 'tag');
-                $zeusPost->syncTagsWithType($tags->where('taxonomy', 'category')->pluck('term.name')->toArray(), 'category');
-            }
+            $this->processPost($post);
         }
 
         Notification::make()
             ->title('Done!')
             ->success()
             ->send();
+    }
+
+    public function processPost($post)
+    {
+        $zeusPost = $this->savePost($post);
+        /** @phpstan-ignore-next-line */
+        $tags = $post->taxonomies()->get();
+
+        if (! $tags->isEmpty()) {
+            $zeusPost->syncTagsWithType($tags->where('taxonomy', 'post_tag')->pluck('term.name')->toArray(), 'tag');
+            $zeusPost->syncTagsWithType($tags->where('taxonomy', 'category')->pluck('term.name')->toArray(), 'category');
+        }
     }
 
     public function savePost($post)
@@ -101,9 +116,10 @@ class Importer extends Page
     protected function getFormSchema(): array
     {
         return [
-            Section::make()->id('main-card')->columns(2)->schema([
+            Section::make()->id('main-card')->columns(3)->schema([
                 Toggle::make('truncate')->label('Truncate')->helperText('truncate the current Posts table'),
                 Toggle::make('overwrite')->label('Overwrite')->helperText('overwrite all existences posts'),
+                Toggle::make('chunk')->label('Chunk')->helperText('import in chunks (useful when you have a lot of posts)'),
             ]),
         ];
     }
