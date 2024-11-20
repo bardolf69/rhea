@@ -106,7 +106,7 @@ class Importer extends Page
     {
         $this->current++;
         $this->progress = ceil(($this->current / $this->count) * 100);
-        $this->refreshFormData(['progress']);
+        $this->$refresh();
     }
 
     public function savePost($post)
