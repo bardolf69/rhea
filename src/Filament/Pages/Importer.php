@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use LaraZeus\Rhea\RheaPlugin;
 use LaraZeus\Sky\SkyPlugin;
+use Livewire\Component as Livewire;
 
 class Importer extends Page
 {
@@ -23,6 +24,8 @@ class Importer extends Page
     public bool $overwrite = false;
 
     public bool $chunk = false;
+
+    public $progress = 0;
 
     public $wpPosts;
 
@@ -116,10 +119,11 @@ class Importer extends Page
     protected function getFormSchema(): array
     {
         return [
-            Section::make()->id('main-card')->columns(3)->schema([
+            Section::make()->id('main-card')->columns(2)->schema([
                 Toggle::make('truncate')->label('Truncate')->helperText('truncate the current Posts table'),
                 Toggle::make('overwrite')->label('Overwrite')->helperText('overwrite all existences posts'),
                 Toggle::make('chunk')->label('Chunk')->helperText('import in chunks (useful when you have a lot of posts)'),
+                Placeholder::make('processed')->label('Records Processed')->content(fn (Livewire $livewire): string => $livewire->progress)->live(),
             ]),
         ];
     }
