@@ -27,7 +27,7 @@ class Importer extends Page
 
     public bool $chunk = false;
 
-    public $progress = 0;
+    public $progress = 10;
     public $current = 0;
     public $count = 0;
 
